@@ -106,7 +106,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	return []byte("Error in getting Contract ID, IOT Data not Submitted!"), err
     }
 	
-    else if b1 == "" {
+    else if b1 == nil {
 	    
 	return []byte("No Contract ID found, IOT Data not Submitted!"), nil
 	    
