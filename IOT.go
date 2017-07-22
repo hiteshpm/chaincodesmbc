@@ -91,7 +91,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 
 		
 		if len(args) != 18 {
-			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
+			return nil, errors.New("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 		}
     
     deviceid := args[1]
@@ -103,12 +103,12 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
     
     if err != nil{
 	    
-	return []byte("Error in getting Contract ID, IOT Data not Submitted!"), err
+	return errors.New("Error in getting Contract ID, IOT Data not Submitted!"), err
     }
 	
     else if b1 == nil {
 	    
-	return []byte("No Contract ID found, IOT Data not Submitted!"), nil
+	return errors.New("No Contract ID found, IOT Data not Submitted!"), nil
 	    
     }
     	contractid.ContractNo = string(b1) 
@@ -213,7 +213,7 @@ func (t *IOT) GetIOTdata (stub shim.ChaincodeStubInterface, args []string) ([]by
 
 	row, err := stub.GetRow("IOTTable", columns)
 	if err != nil {
-		return nil, fmt.Errorf("Error: Failed retrieving document with ContractNo %s. Error %s", ContractNo, err.Error())
+		return nil, errors.New("Error: Failed retrieving document with ContractNo %s. Error %s", ContractNo, err.Error())
 	}
 
     
