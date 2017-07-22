@@ -107,7 +107,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		return nil, errors.New("Error in getting Contract ID!")
 	}
 
-	else if b1 == "" {
+	else if b1 == ""{
 		return nil, errors.New("Device ID Not Found!")
 	}
       
@@ -125,10 +125,10 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		gyroY := args[11]
 		gyroZ:= args[12]
 		magX := args[13]
-        magY := args[14]
-        magZ := args[15]
-        light := args[16]
-        time := args[17]
+        	magY := args[14]
+        	magZ := args[15]
+        	light := args[16]
+        	time := args[17]
     
 		// Insert a row
 	ok, err := stub.InsertRow("IOTTable", shim.Row{
@@ -149,10 +149,10 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 			&shim.Column{Value: &shim.Column_String_{String_: gyroY}},
 			&shim.Column{Value: &shim.Column_String_{String_: gyroZ}},
 			&shim.Column{Value: &shim.Column_String_{String_: magX}},
-            &shim.Column{Value: &shim.Column_String_{String_: magY}},
-            &shim.Column{Value: &shim.Column_String_{String_: magZ}},
-            &shim.Column{Value: &shim.Column_String_{String_: light}},
-            &shim.Column{Value: &shim.Column_String_{String_: time}},
+            		&shim.Column{Value: &shim.Column_String_{String_: magY}},
+            		&shim.Column{Value: &shim.Column_String_{String_: magZ}},
+            		&shim.Column{Value: &shim.Column_String_{String_: light}},
+            		&shim.Column{Value: &shim.Column_String_{String_: time}},
             			
         }})
 
@@ -234,10 +234,10 @@ func (t *IOT) GetIOTdata (stub shim.ChaincodeStubInterface, args []string) ([]by
 	iotJSON.gyroY = ""
 	iotJSON.gyroZ = ""
 	iotJSON.magX = ""
-    iotJSON.magY = ""
-    iotJSON.magZ = ""
-    iotJSON.light = ""
-    iotJSON.time = ""
+    	iotJSON.magY = ""
+    	iotJSON.magZ = ""
+    	iotJSON.light = ""
+    	iotJSON.time = ""
     
 	} else {
 
@@ -255,10 +255,10 @@ func (t *IOT) GetIOTdata (stub shim.ChaincodeStubInterface, args []string) ([]by
 	iotJSON.gyroY = row.Columns[13].GetString_()
 	iotJSON.gyroZ = row.Columns[14].GetString_()
 	iotJSON.magX = row.Columns[15].GetString_()
-    iotJSON.magY = row.Columns[16].GetString_()
-    iotJSON.magZ = row.Columns[17].GetString_()
-    iotJSON.light = row.Columns[18].GetString_()
-    iotJSON.time = row.Columns[19].GetString_()
+    	iotJSON.magY = row.Columns[16].GetString_()
+    	iotJSON.magZ = row.Columns[17].GetString_()
+    	iotJSON.light = row.Columns[18].GetString_()
+    	iotJSON.time = row.Columns[19].GetString_()
 
 	}
 
