@@ -91,7 +91,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 
 		
 		if len(args) != 18 {
-			return nil, errors.New("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
+			return nil, errors.New("Incorrect number of arguments. Expecting 18.")
 		}
     
     deviceid := args[1]
@@ -101,16 +101,16 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
     
     b1,err := t.drr.GetContractNo(stub,[]string{deviceid})
     
-    	contractid.ContractNo=string(b1)
-	
-    	if err != nil{
+	if err != nil{
 		return nil, errors.New("Error in getting Contract ID!")
 	}
 
 	else if b1 == ""{
 		return nil, errors.New("Device ID Not Found!")
 	}
-      
+	
+    	contractid.ContractNo=string(b1)
+	
 		ContractNo := contractid.ContractNo
 		iothub := args[0]
 		ambientTemp := args[2]
