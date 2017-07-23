@@ -8,8 +8,8 @@ import (
 	"github.com/op/go-logging"
 )
 
-type ServicesChaincode struct {
-}
+//type ServicesChaincode struct {
+//}
 
 type IOT struct {
 	drr DRR
@@ -43,7 +43,7 @@ type IOTJSON struct {
 
 var myLogger = logging.MustGetLogger("IOT-Services")
 
-func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+func (t *IOT) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	// Check if table already exists
 	_, err := stub.GetTable("IOTTable")
 	if err == nil {
@@ -79,8 +79,8 @@ func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function stri
 	}
 	return nil, nil
 }
-
-func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+/*
+func (t *IOT) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	myLogger.Debugf("-------------------------------------------------------------------")
 	myLogger.Debugf("Function : ", function)
@@ -91,11 +91,15 @@ func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function st
 	}
 	return nil, errors.New("Received unknown function invocation")
 }
-
+*/
 
 //SubmitDoc () inserts a new row in the table
-func (t *ServicesChaincode) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("Function : ", function)
+	myLogger.Debugf("args : ", args)
+	
 	if len(args) != 18 {
 		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 	}
@@ -105,7 +109,11 @@ func (t *ServicesChaincode) SubmitDoc(stub shim.ChaincodeStubInterface, args []s
 	var contractid Contract
 	b1, _ := t.drr.GetContractNo(stub, []string{deviceid})
 	contractid.ContractNo = string(b1)
+	
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("GetContractNo : ", b1)
 
+	
 	ContractNo := contractid.ContractNo
 	iothub := args[0]
 	ambientTemp := args[2]
@@ -179,14 +187,14 @@ func (t *ServicesChaincode) SubmitDoc(stub shim.ChaincodeStubInterface, args []s
 }
 
 
-func (t *ServicesChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+/*func (t *IOT) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	if function == "GetIOTdata" {
 		return t.GetIOTdata(stub, args)
 	}
 	return nil, errors.New("Received unknown function invocation")
 }
-
-func (t *ServicesChaincode) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+*/
+func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1.")
@@ -260,9 +268,10 @@ func (t *ServicesChaincode) GetIOTdata(stub shim.ChaincodeStubInterface, args []
 	return jsonIOT, nil
 }
 
-func main() {
+/*func main() {
 	err := shim.Start(new(ServicesChaincode))
 	if err != nil {
 		fmt.Printf("Error starting ServicesChaincode: %s", err)
 	}
 }
+*/
