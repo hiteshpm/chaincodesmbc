@@ -265,7 +265,7 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	var iotJSON IOTJSON
 
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
-	myLoggerIOT.Debugf("Matched Row : ", len(row.Columns)
+	myLoggerIOT.Debugf("Matched Row : ", len(row.Columns))
 	
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
