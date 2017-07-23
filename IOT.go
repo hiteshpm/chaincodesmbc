@@ -192,22 +192,21 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	
 	validIOTHub := map[string]bool{"ipad01": true, "ipad02": true, "ipad03": true}
 
-	if(validIOTHub[iothub]){
-		myLoggerIOT.Debugf("-------------------------------------------------------------------")
-		myLoggerIOT.Debugf("Cargo Location Found!",iothub)
-		if iothub == "ipad01" {
-			CargoLocation = "Ex FWD"
-		} else if iothub == "ipad02" {
-			CargoLocation = "Ex Ship"
-		} else if iothub == "ipad03" {
-			CargoLocation = "Shipping"
-		}
-
-	} 
-	else {
+	if !validIOTHub[iothub] {
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
 		myLoggerIOT.Debugf("Cargo Location Not Found!")
-		return nil, errors.New("Cargo Location Not Found!")
+		return nil, errors.New("Cargo Location Not Found!")	
+	} 
+	
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Cargo Location Found!",iothub)
+	
+	if iothub == "ipad01" {
+		CargoLocation = "Ex FWD"
+	} else if iothub == "ipad02" {
+		CargoLocation = "Ex Ship"
+	} else if iothub == "ipad03" {
+		CargoLocation = "Shipping"
 	}
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
