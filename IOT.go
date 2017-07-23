@@ -192,7 +192,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	
 	validIOTHub := map[string]bool{"ipad01": true, "ipad02": true, "ipad03": true}
 
-	if validIOTHub[iothub] {
+	if(validIOTHub[iothub]){
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
 		myLoggerIOT.Debugf("Cargo Location Found!",iothub)
 		if iothub == "ipad01" {
