@@ -222,8 +222,8 @@ func (t *DRR) GetContractNo(stub shim.ChaincodeStubInterface, args []string) ([]
 	
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
-		return nil, nil
 		myLogger.Debugf("Device ID Does not Exist!",len(row.Columns))
+		return nil, nil		
 	}
 
 	myLogger.Debugf("-------------------------------------------------------------------")
