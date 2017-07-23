@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+	//"fmt"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/op/go-logging"
 )
