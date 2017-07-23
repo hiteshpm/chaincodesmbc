@@ -259,14 +259,20 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 
 	row, err := stub.GetRow("IOTTable", columns)
 	if err != nil {
-		return nil, fmt.Errorf("Error: Failed retrieving document with ContractNo %s. Error %s", ContractNo, err.Error())
+		return nil, errors.New("Error: Failed retrieving document!")
 	}
 
 	var iotJSON IOTJSON
 
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Matched Row : ", len(row.Columns)
+	
 	// GetRows returns empty message if key does not exist
 	if len(row.Columns) == 0 {
 
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf(" Contract No Not Found! ")
+	
 		iotJSON.iothub = ""
 		iotJSON.deviceid = ""
 		iotJSON.ambientTemp = ""
@@ -288,6 +294,9 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 
 	} else {
 
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf("Before Retrieving Data")
+	
 		iotJSON.iothub = row.Columns[2].GetString_()
 		iotJSON.deviceid = row.Columns[3].GetString_()
 		iotJSON.ambientTemp = row.Columns[4].GetString_()
@@ -306,6 +315,9 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		iotJSON.magZ = row.Columns[17].GetString_()
 		iotJSON.light = row.Columns[18].GetString_()
 		iotJSON.time = row.Columns[19].GetString_()
+		
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf("After Retrieving Data")
 	}
 
 	jsonIOT, err := json.Marshal(iotJSON)
