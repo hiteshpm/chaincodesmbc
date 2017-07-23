@@ -101,7 +101,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	myLoggerIOT.Debugf("args : ", args)
 	
 	if len(args) != 18 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
+		return nil, errors.New("Incorrect number of arguments. Expecting 18")
 	}
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
