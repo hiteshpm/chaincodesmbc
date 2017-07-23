@@ -103,11 +103,23 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	if len(args) != 18 {
 		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 	}
+	
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("No. of Arguments Passed")
+	
 	deviceid := args[1]
 
 	// to get contract id from device id
 	var contractid Contract
+	
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("Just Before GetContractNo")	
+	
 	b1, _ := t.drr.GetContractNo(stub, []string{deviceid})
+	
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("Just after GetContractNo")
+	
 	contractid.ContractNo = string(b1)
 	
 	myLogger.Debugf("-------------------------------------------------------------------")
