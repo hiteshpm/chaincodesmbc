@@ -41,7 +41,7 @@ type IOTJSON struct {
 	time        string `json:"time"`
 }
 
-var myLogger = logging.MustGetLogger("IOT-Services")
+var myLoggerIOT = logging.MustGetLogger("IOT-Services")
 
 func (t *IOT) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	// Check if table already exists
@@ -96,34 +96,34 @@ func (t *IOT) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 //SubmitDoc () inserts a new row in the table
 func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
-	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("Submit IOT Data")
-	myLogger.Debugf("args : ", args)
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Submit IOT Data")
+	myLoggerIOT.Debugf("args : ", args)
 	
 	if len(args) != 18 {
 		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 	}
 	
-	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("No. of Arguments Passed")
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("No. of Arguments Passed")
 	
 	deviceid := args[1]
 
 	// to get contract id from device id
 	var contractid Contract
 	
-	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("Just Before GetContractNo")	
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Just Before GetContractNo")	
 	
 	b1, _ := t.drr.GetContractNo(stub, []string{deviceid})
 	
-	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("Just after GetContractNo")
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Just after GetContractNo")
 	
 	contractid.ContractNo = string(b1)
 	
-	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("GetContractNo : ", b1)
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("GetContractNo : ", b1)
 
 	
 	ContractNo := contractid.ContractNo
@@ -212,7 +212,7 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		return nil, errors.New("Incorrect number of arguments. Expecting 1.")
 	}
 	ContractNo := args[0]
-	myLogger.Debugf("Contract number : ", ContractNo)
+	myLoggerIOT.Debugf("Contract number : ", ContractNo)
 
 	// Get the row pertaining to this UID
 	var columns []shim.Column
@@ -276,7 +276,7 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	myLogger.Debugf("IOT Data : ", jsonIOT)
+	myLoggerIOT.Debugf("IOT Data : ", jsonIOT)
 	return jsonIOT, nil
 }
 
