@@ -4,9 +4,12 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	"github.com/op/go-logging"
 )
+
+type ServicesChaincode struct {
+}
 
 type IOT struct {
 	drr DRR
@@ -38,7 +41,9 @@ type IOTJSON struct {
 	time        string `json:"time"`
 }
 
-func (t *IOT) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+var myLogger = logging.MustGetLogger("IOT-Services")
+
+func (t *ServicesChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	// Check if table already exists
 	_, err := stub.GetTable("IOTTable")
 	if err == nil {
@@ -75,29 +80,30 @@ func (t *IOT) Init(stub shim.ChaincodeStubInterface, function string, args []str
 	return nil, nil
 }
 
-//SubmitDoc () inserts a new row in the table
+func (t *ServicesChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
-func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+	myLogger.Debugf("-------------------------------------------------------------------")
+	myLogger.Debugf("Function : ", function)
+	myLogger.Debugf("args : ", args)
+
+	if function == "SubmitDoc" {
+		return t.SubmitDoc(stub, args)
+	}
+	return nil, errors.New("Received unknown function invocation")
+}
+
+
+//SubmitDoc () inserts a new row in the table
+func (t *ServicesChaincode) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 18 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 18.")
+		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 	}
-
 	deviceid := args[1]
 
 	// to get contract id from device id
 	var contractid Contract
-
-	b1, err := t.drr.GetContractNo(stub, []string{deviceid})
-
-	if err != nil {
-		return nil, errors.New("Error in getting Contract ID!")
-	}
-
-	if b1 == nil {
-		return nil, errors.New("Device ID Not Found!")
-	}
-
+	b1, _ := t.drr.GetContractNo(stub, []string{deviceid})
 	contractid.ContractNo = string(b1)
 
 	ContractNo := contractid.ContractNo
@@ -151,15 +157,11 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	//function to get cargolocation based on iothub
 
 	var CargoLocation string
-
 	if iothub == "iothub01" {
 		CargoLocation = "Ex FWD"
-
-	}
-	if iothub == "iothub02" {
+	} else if iothub == "iothub02" {
 		CargoLocation = "Ex Ship"
-	}
-	if iothub == "iothub03" {
+	} else if iothub == "iothub03" {
 		CargoLocation = "Shipping"
 	}
 
@@ -176,15 +178,21 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	return nil, err
 }
 
-func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+
+func (t *ServicesChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
+	if function == "GetIOTdata" {
+		return t.GetIOTdata(stub, args)
+	}
+	return nil, errors.New("Received unknown function invocation")
+}
+
+func (t *ServicesChaincode) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	if len(args) != 1 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 1.")
 	}
-
 	ContractNo := args[0]
-
-	fmt.Println("COntract no is %s", ContractNo)
+	myLogger.Debugf("Contract number : ", ContractNo)
 
 	// Get the row pertaining to this UID
 	var columns []shim.Column
@@ -242,16 +250,19 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		iotJSON.magZ = row.Columns[17].GetString_()
 		iotJSON.light = row.Columns[18].GetString_()
 		iotJSON.time = row.Columns[19].GetString_()
-
 	}
 
 	jsonIOT, err := json.Marshal(iotJSON)
-
 	if err != nil {
 		return nil, err
 	}
-
-	fmt.Println(jsonIOT)
-
+	myLogger.Debugf("IOT Data : ", jsonIOT)
 	return jsonIOT, nil
+}
+
+func main() {
+	err := shim.Start(new(ServicesChaincode))
+	if err != nil {
+		fmt.Printf("Error starting ServicesChaincode: %s", err)
+	}
 }
