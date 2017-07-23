@@ -61,7 +61,7 @@ _, err := stub.GetTable("DeviceRegister")
     return nil, nil
 }
 
-func (t* DRR) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error){
+func (t *DRR) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error){
     
     if len(args) != 3 {
 			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 3. Got: %d.", len(args))
@@ -69,15 +69,15 @@ func (t* DRR) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
     
         DeviceID := args[0]
         ContractNo := args[1]
-		Email := args[2]
+	Email := args[2]
 		
     // Insert a row
 	ok, err := stub.InsertRow("DeviceRegister", shim.Row{
 		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: "DRR"}},
-			&shim.Column{Value: &shim.Column_String_{String_: DeviceID}},
-            &shim.Column{Value: &shim.Column_String_{String_: ContractNo}},
-			&shim.Column{Value: &shim.Column_String_{String_: Email}},
+		&shim.Column{Value: &shim.Column_String_{String_: "DRR"}},
+		&shim.Column{Value: &shim.Column_String_{String_: DeviceID}},
+		&shim.Column{Value: &shim.Column_String_{String_: ContractNo}},
+		&shim.Column{Value: &shim.Column_String_{String_: Email}},
         }})
     
     if !ok && err == nil {
@@ -88,76 +88,71 @@ func (t* DRR) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 
     }
 
-func (t *DRR) ReSubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
-
+func (t *DRR) ReSubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {	
 		
-		if len(args) != 3 {
-			return nil, fmt.Errorf("Incorrect number of arguments. Expecting 3. Got: %d.", len(args))
-		}
+	if len(args) != 3 {
+		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 3. Got: %d.", len(args))
+	}
 
-		DeviceID := args[0]
-    
-        var columns []shim.Column
+	DeviceID := args[0]
+
+	var columns []shim.Column
 		col1 := shim.Column{Value: &shim.Column_String_{String_: "DRR"}}
 		columns = append(columns, col1)
 		col2 := shim.Column{Value: &shim.Column_String_{String_: DeviceID}}
 		columns = append(columns, col2)
-    
-        row, err := stub.GetRow("DeviceRegister", columns)
-		if err != nil {
+
+	row, err := stub.GetRow("DeviceRegister", columns)
+
+	if err != nil {
 		return nil, fmt.Errorf("Error: Failed retrieving document with DeviceID %s. Error %s", DeviceID, err.Error())
-		}
-
-		// GetRows returns empty message if key does not exist
-		if len(row.Columns) == 0 {
-		return nil, err
-		}
-    
-        ContractNo := args[1]
-		Email := args[2]
-		
-    ok, err := stub.ReplaceRow("DeviceRegister", shim.Row{
-		Columns: []*shim.Column{
-			&shim.Column{Value: &shim.Column_String_{String_: "DRR"}},
-			&shim.Column{Value: &shim.Column_String_{String_: DeviceID}},
-			&shim.Column{Value: &shim.Column_String_{String_: ContractNo}},
-			&shim.Column{Value: &shim.Column_String_{String_: Email}},
-        }})
-
-	if !ok && err == nil {
-
-		return nil, errors.New("Document unable to Update.")
 	}
 
+	// GetRows returns empty message if key does not exist
+	if len(row.Columns) == 0 {
+		return nil, err
+	}
+
+	ContractNo := args[1]
+	Email := args[2]
+
+	ok, err := stub.ReplaceRow("DeviceRegister", shim.Row{
+	Columns: []*shim.Column{
+		&shim.Column{Value: &shim.Column_String_{String_: "DRR"}},
+		&shim.Column{Value: &shim.Column_String_{String_: DeviceID}},
+		&shim.Column{Value: &shim.Column_String_{String_: ContractNo}},
+		&shim.Column{Value: &shim.Column_String_{String_: Email}},
+	}})
+
+	if !ok && err == nil {
+		return nil, errors.New("Document unable to Update.")
+	}
 	
 	return nil, err
-    
-    
 }
 
-func (t* DRR) Getdrrdata (stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
+func (t *DRR) Getdrrdata (stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
-		if len(args) != 0 {
+	if len(args) != 0 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 0.")
-		}
+	}
     
-    
-    var listDeviceDetails ListDeviceDetails
-
-		listDeviceDetails.deviceDetail = make([]ListDD, 0)
-    
-    
-    
-   /* DeviceID := args[0]*/
+    	var listDeviceDetails ListDeviceDetails
+	
+	listDeviceDetails.deviceDetail = make([]ListDD, 0)
+   
+   	/* DeviceID := args[0]*/
 
 	// Get the row pertaining to this UID
 	var columns []shim.Column
 	col1 := shim.Column{Value: &shim.Column_String_{String_: "DRR"}}
 	columns = append(columns, col1)
+	
 	/*col2 := shim.Column{Value: &shim.Column_String_{String_: DeviceID}}
 	columns = append(columns, col2)*/
 
 	rows, err := stub.GetRows("DeviceRegister", columns)
+	
 	if err != nil {
 		return nil, fmt.Errorf("Failed to retrieve rows")
 	}
@@ -174,17 +169,14 @@ func (t* DRR) Getdrrdata (stub shim.ChaincodeStubInterface, args []string) ([]by
     }
     
     
-    jsonDRR, err := json.Marshal(listDeviceDetails.deviceDetail)
+    	jsonDRR, err := json.Marshal(listDeviceDetails.deviceDetail)
 
 	if err != nil {
-
 		return nil, err
 	}
 
 	fmt.Println(jsonDRR)
-
  	return jsonDRR, nil
-
 }
 
 func (t *DRR) GetContractNo(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
