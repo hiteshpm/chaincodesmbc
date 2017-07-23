@@ -101,7 +101,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	myLoggerIOT.Debugf("args : ", args)
 	
 	if len(args) != 18 {
-		return nil, fmt.Errorf("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
+		return nil, errors.New("Incorrect number of arguments. Expecting 18. Got: %d.", len(args))
 	}
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
@@ -128,7 +128,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	if b1 == nil {
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
 		myLoggerIOT.Debugf("Before B1 = NIL")
-		return nil, fmt.Errorf("B1 = NIL")
+		return nil, errors.New("ContractNo Not Found")
 	}
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
@@ -189,14 +189,27 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	//function to get cargolocation based on iothub
 
 	var CargoLocation string
-	if iothub == "iothub01" {
-		CargoLocation = "Ex FWD"
-	} else if iothub == "iothub02" {
-		CargoLocation = "Ex Ship"
-	} else if iothub == "iothub03" {
-		CargoLocation = "Shipping"
-	}
+	
+	validIOTHub := map[string]bool{"ipad01": true, "ipad02": true, "ipad03": true}
 
+	if validIOTHub[iothub] {
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf("Cargo Location Found!",iothub)
+		if iothub == "ipad01" {
+			CargoLocation = "Ex FWD"
+		} else if iothub == "ipad02" {
+			CargoLocation = "Ex Ship"
+		} else if iothub == "ipad03" {
+			CargoLocation = "Shipping"
+		}
+
+	} 
+	else {
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf("Cargo Location Not Found!")
+		return nil, errors.New("Cargo Location Not Found!")
+	}
+	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
 	myLoggerIOT.Debugf("Cargo Location Set : ", CargoLocation)
 	
