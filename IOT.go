@@ -97,7 +97,7 @@ func (t *IOT) Invoke(stub shim.ChaincodeStubInterface, function string, args []s
 func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	myLogger.Debugf("-------------------------------------------------------------------")
-	myLogger.Debugf("Function : ", function)
+	myLogger.Debugf("Submit IOT Data")
 	myLogger.Debugf("args : ", args)
 	
 	if len(args) != 18 {
