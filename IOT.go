@@ -115,12 +115,21 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
 	myLoggerIOT.Debugf("Just Before GetContractNo")	
 	
-	b1, _ := t.drr.GetContractNo(stub, []string{deviceid})
+	b1, err := t.drr.GetContractNo(stub, []string{deviceid})
+
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Error Just after GetContractNo", err)
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
 	myLoggerIOT.Debugf("Just after GetContractNo")
 	
 	contractid.ContractNo = string(b1)
+	
+	if b1 == nil {
+		myLoggerIOT.Debugf("-------------------------------------------------------------------")
+		myLoggerIOT.Debugf("Before B1 = NIL")
+		return nil, fmt.Errorf("B1 = NIL")
+	}
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
 	myLoggerIOT.Debugf("GetContractNo : ", b1)
@@ -174,6 +183,9 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		return nil, errors.New("Document already exists in IOTTable.")
 	}
 
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("After Row Insertion : ", ok)
+	
 	//function to get cargolocation based on iothub
 
 	var CargoLocation string
@@ -185,16 +197,28 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		CargoLocation = "Shipping"
 	}
 
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Cargo Location Set : ", CargoLocation)
+	
 	toSend := make([]string, 3)
 	toSend[0] = string(ContractNo)
 	toSend[1] = string(CargoLocation)
 	toSend[2] = string(time)
 
-	_, clErr := t.cl.UpdateCargoLocation(stub, toSend)
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Before Update Cargo Location (Contract No) : ", toSend[0])
+	myLoggerIOT.Debugf("Before Update Cargo Location (CargoLocation) : ", toSend[1])
+	myLoggerIOT.Debugf("Before Update Cargo Location (Time) : ", toSend[2])
+	
+	clupdate, clErr := t.cl.UpdateCargoLocation(stub, toSend)
 	if clErr != nil {
 		return nil, clErr
 	}
 
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("After Update Cargo Location (Contract No) : ", clupdate)
+	myLoggerIOT.Debugf("Error After Update Cargo Location (Contract No) : ", clErr)
+		
 	return nil, err
 }
 
