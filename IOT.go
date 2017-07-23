@@ -94,7 +94,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 		return nil, errors.New("Error in getting Contract ID!")
 	}
 
-	if b1 == '' {
+	if b1 == nil {
 		return nil, errors.New("Device ID Not Found!")
 	}
 
