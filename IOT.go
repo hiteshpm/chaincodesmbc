@@ -21,24 +21,24 @@ type Contract struct {
 }
 
 type IOTJSON struct {
-	iothub      string `json:"iothub"`
-	deviceid    string `json:"deviceid"`
-	ambientTemp string `json:"ambientTemp"`
-	objectTemp  string `json:"objectTemp"`
-	humidity    string `json:"humidity"`
-	pressure    string `json:"pressure"`
-	altitude    string `json:"altitude"`
-	accelX      string `json:"accelX"`
-	accelY      string `json:"accelY"`
-	accelZ      string `json:"accelZ"`
-	gyroX       string `json:"gyroX"`
-	gyroY       string `json:"gyroY"`
-	gyroZ       string `json:"gyroZ"`
-	magX        string `json:"magX"`
-	magY        string `json:"magY"`
-	magZ        string `json:"magZ"`
-	light       string `json:"light"`
-	time        string `json:"time"`
+	Iothub      string `json:"iothub"`
+	Deviceid    string `json:"deviceid"`
+	AmbientTemp string `json:"ambientTemp"`
+	ObjectTemp  string `json:"objectTemp"`
+	Humidity    string `json:"humidity"`
+	Pressure    string `json:"pressure"`
+	Altitude    string `json:"altitude"`
+	AccelX      string `json:"accelX"`
+	AccelY      string `json:"accelY"`
+	AccelZ      string `json:"accelZ"`
+	GyroX       string `json:"gyroX"`
+	GyroY       string `json:"gyroY"`
+	GyroZ       string `json:"gyroZ"`
+	MagX        string `json:"magX"`
+	MagY        string `json:"magY"`
+	MagZ        string `json:"magZ"`
+	Light       string `json:"light"`
+	Time        string `json:"time"`
 }
 
 var myLoggerIOT = logging.MustGetLogger("IOT-Services")
@@ -273,68 +273,68 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
 		myLoggerIOT.Debugf(" Contract No Not Found! ")
 	
-		iotJSON.iothub = ""
-		iotJSON.deviceid = ""
-		iotJSON.ambientTemp = ""
-		iotJSON.objectTemp = ""
-		iotJSON.humidity = ""
-		iotJSON.pressure = ""
-		iotJSON.altitude = ""
-		iotJSON.accelX = ""
-		iotJSON.accelY = ""
-		iotJSON.accelZ = ""
-		iotJSON.gyroX = ""
-		iotJSON.gyroY = ""
-		iotJSON.gyroZ = ""
-		iotJSON.magX = ""
-		iotJSON.magY = ""
-		iotJSON.magZ = ""
-		iotJSON.light = ""
-		iotJSON.time = ""
+		iotJSON.Iothub = ""
+		iotJSON.Deviceid = ""
+		iotJSON.AmbientTemp = ""
+		iotJSON.ObjectTemp = ""
+		iotJSON.Humidity = ""
+		iotJSON.Pressure = ""
+		iotJSON.Altitude = ""
+		iotJSON.AccelX = ""
+		iotJSON.AccelY = ""
+		iotJSON.AccelZ = ""
+		iotJSON.GyroX = ""
+		iotJSON.GyroY = ""
+		iotJSON.GyroZ = ""
+		iotJSON.MagX = ""
+		iotJSON.MagY = ""
+		iotJSON.MagZ = ""
+		iotJSON.Light = ""
+		iotJSON.Time = ""
 
 	} else {
 
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
 		myLoggerIOT.Debugf("Before Retrieving Data")
 	
-		iotJSON.iothub = row.Columns[2].GetString_()
-		iotJSON.deviceid = row.Columns[3].GetString_()
-		iotJSON.ambientTemp = row.Columns[4].GetString_()
-		iotJSON.objectTemp = row.Columns[5].GetString_()
-		iotJSON.humidity = row.Columns[6].GetString_()
-		iotJSON.pressure = row.Columns[7].GetString_()
-		iotJSON.altitude = row.Columns[8].GetString_()
-		iotJSON.accelX = row.Columns[9].GetString_()
-		iotJSON.accelY = row.Columns[10].GetString_()
-		iotJSON.accelZ = row.Columns[11].GetString_()
-		iotJSON.gyroX = row.Columns[12].GetString_()
-		iotJSON.gyroY = row.Columns[13].GetString_()
-		iotJSON.gyroZ = row.Columns[14].GetString_()
-		iotJSON.magX = row.Columns[15].GetString_()
-		iotJSON.magY = row.Columns[16].GetString_()
-		iotJSON.magZ = row.Columns[17].GetString_()
-		iotJSON.light = row.Columns[18].GetString_()
-		iotJSON.time = row.Columns[19].GetString_()			
+		iotJSON.Iothub = row.Columns[2].GetString_()
+		iotJSON.Deviceid = row.Columns[3].GetString_()
+		iotJSON.AmbientTemp = row.Columns[4].GetString_()
+		iotJSON.ObjectTemp = row.Columns[5].GetString_()
+		iotJSON.Humidity = row.Columns[6].GetString_()
+		iotJSON.Pressure = row.Columns[7].GetString_()
+		iotJSON.Altitude = row.Columns[8].GetString_()
+		iotJSON.AccelX = row.Columns[9].GetString_()
+		iotJSON.AccelY = row.Columns[10].GetString_()
+		iotJSON.AccelZ = row.Columns[11].GetString_()
+		iotJSON.GyroX = row.Columns[12].GetString_()
+		iotJSON.GyroY = row.Columns[13].GetString_()
+		iotJSON.GyroZ = row.Columns[14].GetString_()
+		iotJSON.MagX = row.Columns[15].GetString_()
+		iotJSON.MagY = row.Columns[16].GetString_()
+		iotJSON.MagZ = row.Columns[17].GetString_()
+		iotJSON.Light = row.Columns[18].GetString_()
+		iotJSON.Time = row.Columns[19].GetString_()			
 		
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
-		myLoggerIOT.Debugf(iotJSON.iothub)
-		myLoggerIOT.Debugf(iotJSON.deviceid)
-		myLoggerIOT.Debugf(iotJSON.ambientTemp)
-		myLoggerIOT.Debugf(iotJSON.objectTemp)
-		myLoggerIOT.Debugf(iotJSON.humidity)
-		myLoggerIOT.Debugf(iotJSON.pressure)
-		myLoggerIOT.Debugf(iotJSON.altitude)
-		myLoggerIOT.Debugf(iotJSON.accelX)
-		myLoggerIOT.Debugf(iotJSON.accelY)
-		myLoggerIOT.Debugf(iotJSON.accelZ)
-		myLoggerIOT.Debugf(iotJSON.gyroX)
-		myLoggerIOT.Debugf(iotJSON.gyroY)
-		myLoggerIOT.Debugf(iotJSON.gyroZ)
-		myLoggerIOT.Debugf(iotJSON.magX)
-		myLoggerIOT.Debugf(iotJSON.magY)
-		myLoggerIOT.Debugf(iotJSON.magZ)
-		myLoggerIOT.Debugf(iotJSON.light)
-		myLoggerIOT.Debugf(iotJSON.time)		
+		myLoggerIOT.Debugf(iotJSON.Iothub)
+		myLoggerIOT.Debugf(iotJSON.Deviceid)
+		myLoggerIOT.Debugf(iotJSON.AmbientTemp)
+		myLoggerIOT.Debugf(iotJSON.ObjectTemp)
+		myLoggerIOT.Debugf(iotJSON.Humidity)
+		myLoggerIOT.Debugf(iotJSON.Pressure)
+		myLoggerIOT.Debugf(iotJSON.Altitude)
+		myLoggerIOT.Debugf(iotJSON.AccelX)
+		myLoggerIOT.Debugf(iotJSON.AccelY)
+		myLoggerIOT.Debugf(iotJSON.AccelZ)
+		myLoggerIOT.Debugf(iotJSON.GyroX)
+		myLoggerIOT.Debugf(iotJSON.GyroY)
+		myLoggerIOT.Debugf(iotJSON.GyroZ)
+		myLoggerIOT.Debugf(iotJSON.MagX)
+		myLoggerIOT.Debugf(iotJSON.MagY)
+		myLoggerIOT.Debugf(iotJSON.MagZ)
+		myLoggerIOT.Debugf(iotJSON.Light)
+		myLoggerIOT.Debugf(iotJSON.Time)		
 	}	
 	myLoggerIOT.Debugf("iotJSON", iotJSON)
 	jsonIOT, err := json.Marshal(iotJSON)
