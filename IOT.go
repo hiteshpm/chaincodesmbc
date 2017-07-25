@@ -155,7 +155,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	light := args[16]
 	time := args[17]
 	
-	ContractNoLocation, err := stub.CreateCompositeKey(ContractNoLocation, []string{ContractNo, iothub})
+	ContractNoLocation := ContractNo + iothub
 	
 	if err != nil {
 		return nil, err
