@@ -335,8 +335,8 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		myLoggerIOT.Debugf(iotJSON.magZ)
 		myLoggerIOT.Debugf(iotJSON.light)
 		myLoggerIOT.Debugf(iotJSON.time)		
-	}
-
+	}	
+	myLoggerIOT.Debugf("iotJSON", iotJSON)
 	jsonIOT, err := json.Marshal(iotJSON)
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
@@ -345,7 +345,7 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	if err != nil {
 		return nil, err
 	}
-	myLoggerIOT.Debugf("IOT Data : ", jsonIOT)
+	myLoggerIOT.Debugf("IOT Data : ", string(jsonIOT)) 
 	return jsonIOT, nil
 }
 
