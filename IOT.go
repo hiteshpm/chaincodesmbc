@@ -258,15 +258,14 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	Location := args[1]
 	myLoggerIOT.Debugf("Contract number : ", ContractNo)
 	myLoggerIOT.Debugf("Location : ", Location)
-
+	ContractNoLocation := ContractNo + Location
+	
 	// Get the row pertaining to this UID
 	var columns []shim.Column
 	col1 := shim.Column{Value: &shim.Column_String_{String_: "IOT"}}
 	columns = append(columns, col1)
-	col2 := shim.Column{Value: &shim.Column_String_{String_: ContractNo}}
+	col2 := shim.Column{Value: &shim.Column_String_{String_: ContractNoLocation}}
 	columns = append(columns, col2)
-	col3 := shim.Column{Value: &shim.Column_String_{String_: Location}}
-	columns = append(columns, col3)
 
 	row, err := stub.GetRow("IOTTable", columns)
 	if err != nil {
