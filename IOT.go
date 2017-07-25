@@ -54,7 +54,8 @@ func (t *IOT) Init(stub shim.ChaincodeStubInterface, function string, args []str
 	// Create IOT Table
 	err = stub.CreateTable("IOTTable", []*shim.ColumnDefinition{
 		&shim.ColumnDefinition{Name: "Type", Type: shim.ColumnDefinition_STRING, Key: true},
-		&shim.ColumnDefinition{Name: "ContractNo", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "ContractNoLocation", Type: shim.ColumnDefinition_STRING, Key: true},
+		&shim.ColumnDefinition{Name: "ContractNo", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "iothub", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "deviceid", Type: shim.ColumnDefinition_STRING, Key: false},
 		&shim.ColumnDefinition{Name: "ambientTemp", Type: shim.ColumnDefinition_STRING, Key: false},
@@ -135,7 +136,7 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	myLoggerIOT.Debugf("GetContractNo : ", b1)
 
 	
-	ContractNo := contractid.ContractNo
+	ContractNo := contractid.ContractNo	
 	iothub := args[0]
 	ambientTemp := args[2]
 	objectTemp := args[3]
@@ -153,11 +154,18 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	magZ := args[15]
 	light := args[16]
 	time := args[17]
+	
+	ContractNoLocation, err := stub.CreateCompositeKey(ContractNoLocation, []string{ContractNo, iothub})
+	
+	if err != nil {
+		return nil, err
+	}
 
 	// Insert a row
 	ok, err := stub.InsertRow("IOTTable", shim.Row{
 		Columns: []*shim.Column{
 			&shim.Column{Value: &shim.Column_String_{String_: "IOT"}},
+			&shim.Column{Value: &shim.Column_String_{String_: ContractNoLocation}},
 			&shim.Column{Value: &shim.Column_String_{String_: ContractNo}},
 			&shim.Column{Value: &shim.Column_String_{String_: iothub}},
 			&shim.Column{Value: &shim.Column_String_{String_: deviceid}},
@@ -244,11 +252,13 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 */
 func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
-	if len(args) != 1 {
-		return nil, errors.New("Incorrect number of arguments. Expecting 1.")
+	if len(args) != 2 {
+		return nil, errors.New("Incorrect number of arguments. Expecting 2.")
 	}
 	ContractNo := args[0]
+	Location := args[1]
 	myLoggerIOT.Debugf("Contract number : ", ContractNo)
+	myLoggerIOT.Debugf("Location : ", Location)
 
 	// Get the row pertaining to this UID
 	var columns []shim.Column
@@ -256,6 +266,8 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	columns = append(columns, col1)
 	col2 := shim.Column{Value: &shim.Column_String_{String_: ContractNo}}
 	columns = append(columns, col2)
+	col3 := shim.Column{Value: &shim.Column_String_{String_: Location}}
+	columns = append(columns, col3)
 
 	row, err := stub.GetRow("IOTTable", columns)
 	if err != nil {
