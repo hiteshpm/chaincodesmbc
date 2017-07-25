@@ -314,13 +314,34 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 		iotJSON.magY = row.Columns[16].GetString_()
 		iotJSON.magZ = row.Columns[17].GetString_()
 		iotJSON.light = row.Columns[18].GetString_()
-		iotJSON.time = row.Columns[19].GetString_()
+		iotJSON.time = row.Columns[19].GetString_()			
 		
 		myLoggerIOT.Debugf("-------------------------------------------------------------------")
-		myLoggerIOT.Debugf("After Retrieving Data")
+		myLoggerIOT.Debugf(iotJSON.iothub)
+		myLoggerIOT.Debugf(iotJSON.deviceid)
+		myLoggerIOT.Debugf(iotJSON.ambientTemp)
+		myLoggerIOT.Debugf(iotJSON.objectTemp)
+		myLoggerIOT.Debugf(iotJSON.humidity)
+		myLoggerIOT.Debugf(iotJSON.pressure)
+		myLoggerIOT.Debugf(iotJSON.altitude)
+		myLoggerIOT.Debugf(iotJSON.accelX)
+		myLoggerIOT.Debugf(iotJSON.accelY)
+		myLoggerIOT.Debugf(iotJSON.accelZ)
+		myLoggerIOT.Debugf(iotJSON.gyroX)
+		myLoggerIOT.Debugf(iotJSON.gyroY)
+		myLoggerIOT.Debugf(iotJSON.gyroZ)
+		myLoggerIOT.Debugf(iotJSON.magX)
+		myLoggerIOT.Debugf(iotJSON.magY)
+		myLoggerIOT.Debugf(iotJSON.magZ)
+		myLoggerIOT.Debugf(iotJSON.light)
+		myLoggerIOT.Debugf(iotJSON.time)		
 	}
 
 	jsonIOT, err := json.Marshal(iotJSON)
+	
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("Error : ",json)
+	
 	if err != nil {
 		return nil, err
 	}
