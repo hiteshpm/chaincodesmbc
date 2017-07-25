@@ -340,7 +340,7 @@ func (t *IOT) GetIOTdata(stub shim.ChaincodeStubInterface, args []string) ([]byt
 	jsonIOT, err := json.Marshal(iotJSON)
 	
 	myLoggerIOT.Debugf("-------------------------------------------------------------------")
-	myLoggerIOT.Debugf("Error : ",json)
+	myLoggerIOT.Debugf("Error in Marshalling : ",err)
 	
 	if err != nil {
 		return nil, err
