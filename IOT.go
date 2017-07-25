@@ -157,9 +157,8 @@ func (t *IOT) SubmitDoc(stub shim.ChaincodeStubInterface, args []string) ([]byte
 	
 	ContractNoLocation := ContractNo + iothub
 	
-	if err != nil {
-		return nil, err
-	}
+	myLoggerIOT.Debugf("-------------------------------------------------------------------")
+	myLoggerIOT.Debugf("ContractNoLocation : ", ContractNoLocation)
 
 	// Insert a row
 	ok, err := stub.InsertRow("IOTTable", shim.Row{
